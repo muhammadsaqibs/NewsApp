@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export class UpdateNews extends Component {
   render() {
-    let  {mytitle,desc,imgUrl}=this.props;
+    let  {mytitle,desc,imgUrl,newsUrl}=this.props;
     return (
       <div>
         <div class="card" style={{width: '18rem'}}>
@@ -10,7 +10,7 @@ export class UpdateNews extends Component {
   <div class="card-body">
     <h5 class="card-title">{mytitle}</h5>
     <p class="card-text">{desc}</p>
-    <a href="/" class="btn btn-primary">Read More</a>
+    <a href={newsUrl} class="btn btn-primary">Read More</a>
   </div>
 </div>
       </div>
