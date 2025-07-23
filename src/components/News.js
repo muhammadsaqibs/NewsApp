@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import UpdateNews from './UpdateNews'
 
 export class News extends Component {
-  articles=[{  //first element of array
+  /*articles=[{  //first element of array
       "source": {
         "id": "bbc-news",
         "name": "BBC News"
@@ -40,11 +40,20 @@ export class News extends Component {
       "urlToImage": "https://ichef.bbci.co.uk/ace/branded_sport/1200/cpsprodpb/9f5e/live/0a439080-5b40-11f0-8c58-9faffe09c913.jpg",
       "publishedAt": "2025-07-07T15:11:43Z",
       "content": "England head coach Brendon McCullum said Archer is \"ready to go\" and will \"come into calculations\".\r\nArcher's return could come as part of a refresh of an England attack that looked weary in concedin… [+1033 chars]"
-    }]
+    }]*/
+  
+    async componentDidMount(){   //build in lifecycle method
+      console.log("this is function");
+      let url="https://newsapi.org/v2/top-headlines?country=us&apiKey=b019a4ee096a497c9d46d0fb3db8a947"
+  
+      let data= await fetch(url);
+      let parsedData= await data.json();
+      this.setState({articles:parsedData.articles});
+    }
   constructor(){
       super();
        this.state={
-        articles:this.articles,
+        articles:[],   //make empty
         loading:false
       }
     }
@@ -55,8 +64,8 @@ export class News extends Component {
       <h1>Latest news</h1>
       <div className='row '>
       {this.state.articles.map((element)=>{
-        return (<div className='col md-4' key={element.url}>
-       <UpdateNews mytitle={element.title.slice(0,19)} desc={element.description.slice(0,80)} imgUrl={element.urlToImage} newsUrl={element.url} /> 
+        return (<div className='col md-4' key={element.url?element.url:''}>
+       <UpdateNews mytitle={element.title?element.title.slice(0,19):''} desc={element.description?element.description.slice(0,80):''} imgUrl={element.urlToImage?element.urlToImage:'https://ichef.bbci.co.uk/ace/branded_sport/1200/cpsprodpb/da5f/live/c6506010-6274-11f0-b9ec-2f50122ae57d.jpg'} newsUrl={element.url?element.url:''} /> 
       </div>)
       })}
       
