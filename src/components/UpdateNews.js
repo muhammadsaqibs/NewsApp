@@ -10,7 +10,7 @@ export class UpdateNews extends Component {
   <div class="card-body">
     <h5 class="card-title">{mytitle}</h5>
     <p class="card-text">{desc}</p>
-    <a href={newsUrl} class="btn btn-primary">Read More</a>
+    <a href={newsUrl} class="btn btn-dark">Read More</a>
   </div>
 </div>
       </div>
