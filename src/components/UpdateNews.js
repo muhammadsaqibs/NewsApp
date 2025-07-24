@@ -5,12 +5,12 @@ export class UpdateNews extends Component {
     let  {mytitle,desc,imgUrl,newsUrl}=this.props;
     return (
       <div>
-        <div class="card" style={{width: '18rem'}}>
-  <img src={imgUrl} class="card-img-top" alt="..."/>
-  <div class="card-body">
-    <h5 class="card-title">{mytitle}</h5>
-    <p class="card-text">{desc}</p>
-    <a href={newsUrl} class="btn btn-dark">Read More</a>
+        <div className="card" style={{width: '18rem'}}>
+  <img src={imgUrl} className="card-img-top" alt="..."/>
+  <div className="card-body">
+    <h5 className="card-title">{mytitle}</h5>
+    <p className="card-text">{desc}</p>
+    <a href={newsUrl} className="btn btn-dark">Read More</a>
   </div>
 </div>
       </div>
