@@ -5,7 +5,7 @@ export class News extends Component {
 
     async componentDidMount(){   //build in lifecycle method
       const {page}=this.state;
-       let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=96f0ac4513bb495ab9765306679eb654&page=${page}&pageSize=${this.props.pageSize}`;
+       let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=96f0ac4513bb495ab9765306679eb654&page=${page}&pageSize=${this.props.pageSize}&category=${this.props.category}`;
      this.setState({loading:true});
   
       let data= await fetch(url);
@@ -25,7 +25,7 @@ export class News extends Component {
    HandlePRevious= async ()=> {
     let newPage=this.state.page-1;
            
-    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=96f0ac4513bb495ab9765306679eb654&page=${newPage}&pageSize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=96f0ac4513bb495ab9765306679eb654&page=${newPage}&pageSize=${this.props.pageSize}&category=${this.props.category}`;
 
       this.setState({loading:true});
       let data= await fetch(url);
@@ -43,7 +43,7 @@ export class News extends Component {
            return;
      }
      else{
-    let url=`https://newsapi.org/v2/top-headlines?country=us&apiKey=96f0ac4513bb495ab9765306679eb654&page=${newPage}&pageSize=${this.props.pageSize}`
+    let url=`https://newsapi.org/v2/top-headlines?country=us&apiKey=96f0ac4513bb495ab9765306679eb654&page=${newPage}&pageSize=${this.props.pageSize}&category=${this.props.category}`
       this.setState({loading:true});
       let data= await fetch(url);
       let parsedData= await data.json();
@@ -52,7 +52,7 @@ export class News extends Component {
   render() {
     return (
       <div className='container my-3'> 
-      <h1>Latest news</h1>
+      <h3 style={{textAlign:'center'}}>Top Headlines</h3>
       
       {this.state.loading && (
         <div className="text-center my-5">
@@ -63,7 +63,7 @@ export class News extends Component {
       <div className='row '>
       {!this.state.loading && Array.isArray(this.state.articles) && this.state.articles.map((element)=>{
         return (<div className='col-md-4' key={element.url?element.url:''}>
-       <UpdateNews mytitle={element.title?element.title.slice(0,19):''} desc={element.description?element.description.slice(0,80):''} imgUrl={element.urlToImage?element.urlToImage:'https://ichef.bbci.co.uk/ace/branded_sport/1200/cpsprodpb/da5f/live/c6506010-6274-11f0-b9ec-2f50122ae57d.jpg'} newsUrl={element.url?element.url:''} /> 
+       <UpdateNews mytitle={element.title?element.title:''} desc={element.description?element.description:''} imgUrl={element.urlToImage?element.urlToImage:'https://ichef.bbci.co.uk/ace/branded_sport/1200/cpsprodpb/da5f/live/c6506010-6274-11f0-b9ec-2f50122ae57d.jpg'} newsUrl={element.url?element.url:''} author={!element.author?'unknown':element.author} date={new Date(element.publishedAt).toGMTString()} /> 
       </div>)
       })}
       
