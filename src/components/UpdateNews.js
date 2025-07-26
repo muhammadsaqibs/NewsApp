@@ -6,7 +6,14 @@ export class UpdateNews extends Component {
     return (
       <div>
         <div className="card" >
-  <img src={imgUrl} className="card-img-top" alt="..."/>
+  {imgUrl && (
+  <img
+    src={imgUrl}
+    className="card-img-top"
+    alt="news"
+    style={{ height: "200px", objectFit: "cover" }}
+  />
+)}
   <div className="card-body">
     <h5 className="card-title">{mytitle}</h5>
     <p className="card-text">{desc}</p>
