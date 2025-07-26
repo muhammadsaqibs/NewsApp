@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import UpdateNews from './UpdateNews'
 
 export class News extends Component {
-
+     
     async componentDidMount(){   //build in lifecycle method
       const {page}=this.state;
        let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=96f0ac4513bb495ab9765306679eb654&page=${page}&pageSize=${this.props.pageSize}&category=${this.props.category}`;
@@ -13,15 +13,23 @@ export class News extends Component {
     
       this.setState({articles:parsedData.articles,totalResults: parsedData.totalResults ,loading:false});
     }
-  constructor(){
-      super();
+   capitalizeFirstLetter(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+  constructor(props){
+      super(props);
        this.state={
         articles:[],   //make empty
         loading:true,
         page:1,
         totalResults:0
       }
+        document.title='${this.capitalizeFirstLetter(this.props.category)} -noval news';
+         document.title = `${this.capitalizeFirstLetter(this.props.category)} - Noval News`;
     }
+     
+
    HandlePRevious= async ()=> {
     let newPage=this.state.page-1;
            
@@ -52,7 +60,7 @@ export class News extends Component {
   render() {
     return (
       <div className='container my-3'> 
-      <h3 style={{textAlign:'center'}}>Top Headlines</h3>
+      <h3 style={{textAlign:'center'}}>{`${this.capitalizeFirstLetter(this.props.category)} - Noval News`}</h3>
       
       {this.state.loading && (
         <div className="text-center my-5">

@@ -12,7 +12,7 @@ import {
 function App() {
   
   
-  
+  const pageSize=8;
   return(
   <>
   <Router>
@@ -22,13 +22,13 @@ function App() {
 
 
 
-<Route path="/science" element={ <News key="science" pageSize={10} category="science" />}/>
-<Route path="/health" element={ <News key="health" pageSize={10} category="health" />}/>
-<Route path="/sports" element={ <News key="sports" pageSize={10} category="sports" />}/>
-<Route path="/entertainment" element={ <News key="entertainment" pageSize={10} category="entertainment" />}/>
-<Route path="/" element={ <News key="general" pageSize={10} category="general" />}/>
-<Route path="/business" element={ <News key="business" pageSize={10} category="business" />}/>
-<Route path="/technology" element={ <News key="technology" pageSize={10} category="technology" />}/>
+<Route path="/science" element={ <News key="science" pageSize={pageSize} category="science" />}/>
+<Route path="/health" element={ <News key="health" pageSize={pageSize} category="health" />}/>
+<Route path="/sports" element={ <News key="sports" pageSize={pageSize} category="sports" />}/>
+<Route path="/entertainment" element={ <News key="entertainment" pageSize={pageSize} category="entertainment" />}/>
+<Route path="/" element={ <News key="general" pageSize={pageSize} category="general" />}/>
+<Route path="/business" element={ <News key="business" pageSize={pageSize} category="business" />}/>
+<Route path="/technology" element={ <News key="technology" pageSize={pageSize} category="technology" />}/>
 </Routes>
   </Router>
   </>
