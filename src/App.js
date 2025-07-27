@@ -1,4 +1,4 @@
-
+import React, { Component } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import News from './components/News';
@@ -9,10 +9,10 @@ import {
   Route,
   
 } from "react-router-dom";
-function App() {
-  
-  
-  const pageSize=8;
+export default class App extends Component {
+    apikey = process.env.REACT_APP_NEWS_API_KEY;
+   pageSize=8;
+  render(){
   return(
   <>
   <Router>
@@ -22,17 +22,16 @@ function App() {
 
 
 
-<Route path="/science" element={ <News key="science" pageSize={pageSize} category="science" />}/>
-<Route path="/health" element={ <News key="health" pageSize={pageSize} category="health" />}/>
-<Route path="/sports" element={ <News key="sports" pageSize={pageSize} category="sports" />}/>
-<Route path="/entertainment" element={ <News key="entertainment" pageSize={pageSize} category="entertainment" />}/>
-<Route path="/" element={ <News key="general" pageSize={pageSize} category="general" />}/>
-<Route path="/business" element={ <News key="business" pageSize={pageSize} category="business" />}/>
-<Route path="/technology" element={ <News key="technology" pageSize={pageSize} category="technology" />}/>
+<Route path="/science" element={ <News apikey={this.apikey} key="science" pageSize={this.pageSize} category="science" />}/>
+<Route path="/health" element={ <News apikey={this.apikey} key="health" pageSize={this.pageSize} category="health" />}/>
+<Route path="/sports" element={ <News apikey={this.apikey} key="sports" pageSize={this.pageSize} category="sports" />}/>
+<Route path="/entertainment" element={ <News apikey={this.apikey} key="entertainment" pageSize={this.pageSize} category="entertainment" />}/>
+<Route path="/" element={ <News apikey={this.apikey} key="general" pageSize={this.pageSize} category="general" />}/>
+<Route path="/business" element={ <News apikey={this.apikey} key="business" pageSize={this.pageSize} category="business" />}/>
+<Route path="/technology" element={ <News apikey={this.apikey} key="technology" pageSize={this.pageSize} category="technology" />}/>
 </Routes>
   </Router>
   </>
   );  
-}
+}}
 //business entertainment general health science sports technology
-export default App;

@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import UpdateNews from './UpdateNews'
-  import InfiniteScroll from 'react-infinite-scroll-component';
 export class News extends Component {
      
     async componentDidMount(){   //build in lifecycle method
       const {page}=this.state;
-       let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=b019a4ee096a497c9d46d0fb3db8a947&page=${page}&pageSize=${this.props.pageSize}&category=${this.props.category}`;
+       let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${this.props.apikey}&page=${page}&pageSize=${this.props.pageSize}&category=${this.props.category}`;
      this.setState({loading:true});
   
       let data= await fetch(url);
@@ -25,7 +24,6 @@ export class News extends Component {
         page:1,
         totalResults:0
       }
-        document.title='${this.capitalizeFirstLetter(this.props.category)} -noval news';
          document.title = `${this.capitalizeFirstLetter(this.props.category)} - Noval News`;
     }
      
@@ -33,7 +31,7 @@ export class News extends Component {
    HandlePRevious= async ()=> {
     let newPage=this.state.page-1;
            
-    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=b019a4ee096a497c9d46d0fb3db8a947&page=${newPage}&pageSize=${this.props.pageSize}&category=${this.props.category}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${this.props.apikey}&page=${newPage}&pageSize=${this.props.pageSize}&category=${this.props.category}`;
 
       this.setState({loading:true});
       let data= await fetch(url);
@@ -51,7 +49,7 @@ export class News extends Component {
            return;
      }
      else{
-    let url=`https://newsapi.org/v2/top-headlines?country=us&apiKey=b019a4ee096a497c9d46d0fb3db8a947&page=${newPage}&pageSize=${this.props.pageSize}&category=${this.props.category}`
+    let url=`https://newsapi.org/v2/top-headlines?country=us&apiKey=${this.props.apikey}&page=${newPage}&pageSize=${this.props.pageSize}&category=${this.props.category}`
       this.setState({loading:true});
       let data= await fetch(url);
       let parsedData= await data.json();
