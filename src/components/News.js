@@ -24,10 +24,11 @@ function News(props) {
   };
 
   useEffect(() => {
-    document.title = <h1>{`${capitalizeFirstLetter(props.category)} - Noval News`}</h1>;
-    fetchNews(page);
-    // eslint-disable-next-line
-  }, []);
+  document.title = `${capitalizeFirstLetter(props.category)} - Noval News`;
+  fetchNews(page);
+  // eslint-disable-next-line
+}, []);
+
 
   const handlePrevious = async () => {
     const newPage = page - 1;

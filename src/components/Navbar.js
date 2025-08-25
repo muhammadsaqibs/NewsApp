@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 export default function Navbar({ mode, toggleMode }) {
+   
   const navStyle = {
     backgroundColor: mode === 'dark' ? '#343a40' : '#e3f2fd',
     color: mode === 'dark' ? 'white' : '#000',
