@@ -55,7 +55,7 @@ function News(props) {
         </div>
       )}
 
-      <div className="row">
+      <div className="row d-flex">
         {!loading &&
           Array.isArray(articles) &&
           articles.map((element) => {
@@ -64,11 +64,7 @@ function News(props) {
                 <UpdateNews
                   mytitle={element.title ? element.title : ''}
                   desc={element.description ? element.description : ''}
-                  imgUrl={
-                    element.urlToImage
-                      ? element.urlToImage
-                      : 'https://ichef.bbci.co.uk/ace/branded_sport/1200/cpsprodpb/da5f/live/c6506010-6274-11f0-b9ec-2f50122ae57d.jpg'
-                  }
+                  imgUrl={element.urlToImage}
                   newsUrl={element.url ? element.url : ''}
                   author={!element.author ? 'unknown' : element.author}
                   date={new Date(element.publishedAt).toGMTString()}
