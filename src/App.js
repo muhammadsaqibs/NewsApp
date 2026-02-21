@@ -12,7 +12,7 @@ function App() {
   };
 
   const pageSize = 6;
-  const apikey = process.env.REACT_APP_NEWS_API_KEY;
+  const apikey = process.env.REACT_APP_GNEWS_API_KEY;
 
   return (
     <Router>

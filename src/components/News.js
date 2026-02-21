@@ -14,7 +14,7 @@ function News(props) {
 
   const fetchNews = async (pageNumber) => {
     setLoading(true);
-    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${props.apikey}&page=${pageNumber}&pageSize=${props.pageSize}&category=${props.category}`;
+    let url = `https://gnews.io/api/v4/top-headlines?category=${props.category}&token=${props.apikey}&lang=en&max=10`;
     let data = await fetch(url);
     let parsedData = await data.json();
 
