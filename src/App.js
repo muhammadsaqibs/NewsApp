@@ -12,7 +12,7 @@ function App() {
   };
 
   const pageSize = 6;
-  const apikey = process.env.REACT_APP_GNEWS_API_KEY;
+  const apikey = process.env.NEWS_API_KEY;
 
   return (
     <Router>
@@ -38,6 +38,10 @@ function App() {
         <Route
           path="/entertainment"
           element={<News key="entertainment" category="entertainment" pageSize={pageSize} apikey={apikey} />}
+        />
+        <Route
+          path="/pakistan"
+          element={<News key="pakistan" category="general" pageSize={pageSize} apikey={apikey} country="pk" />}
         />
       </Routes>
     </Router>

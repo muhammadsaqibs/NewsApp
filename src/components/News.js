@@ -14,13 +14,29 @@ function News(props) {
 
   const fetchNews = async (pageNumber) => {
     setLoading(true);
-    let url = `https://gnews.io/api/v4/top-headlines?category=${props.category}&token=${props.apikey}&lang=en&max=10`;
-    let data = await fetch(url);
-    let parsedData = await data.json();
+    try {
+      const apiKey = props.apikey || process.env.NEWS_API_KEY;
+      const categoryParam = props.category ? `&category=${encodeURIComponent(props.category)}` : '';
+      const countryParam = props.country ? `&country=${encodeURIComponent(props.country)}` : '';
+      const qParam = props.search ? `&q=${encodeURIComponent(props.search)}` : '';
+      const pageParam = `&page=${pageNumber}`;
 
-    setArticles(parsedData.articles);
-    setTotalResults(parsedData.totalResults);
-    setLoading(false);
+      const url = `https://newsdata.io/api/1/news?apikey=${apiKey}${categoryParam}${countryParam}&language=en${qParam}${pageParam}`;
+      const data = await fetch(url);
+      const parsedData = await data.json();
+
+      const results = parsedData.results || parsedData.articles || [];
+      setArticles(results);
+
+      const total = parsedData.totalResults || parsedData.total_results || parsedData.count || results.length || 0;
+      setTotalResults(total);
+    } catch (err) {
+      console.error('Failed fetching news:', err);
+      setArticles([]);
+      setTotalResults(0);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -56,18 +72,21 @@ function News(props) {
       )}
 
       <div className="row d-flex">
-        {!loading &&
-          Array.isArray(articles) &&
+        {!loading && Array.isArray(articles) &&
           articles.map((element) => {
+            const img = element.image_url || element.urlToImage || element.image;
+            const newsLink = element.link || element.url || '';
+            const author = Array.isArray(element.creator) && element.creator.length > 0 ? element.creator[0] : element.author || 'unknown';
+            const dateVal = element.pubDate || element.publishedAt || element.date || '';
             return (
-              <div className="col-md-4" key={element.url ? element.url : ''}>
+              <div className="col-md-4" key={newsLink || element.title}>
                 <UpdateNews
                   mytitle={element.title ? element.title : ''}
                   desc={element.description ? element.description : ''}
-                  imgUrl={element.urlToImage}
-                  newsUrl={element.url ? element.url : ''}
-                  author={!element.author ? 'unknown' : element.author}
-                  date={new Date(element.publishedAt).toGMTString()}
+                  imgUrl={img}
+                  newsUrl={newsLink}
+                  author={author}
+                  date={dateVal}
                 />
               </div>
             );
