@@ -4,6 +4,7 @@ import UpdateNews from './UpdateNews';
 function News(props) {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
 
@@ -15,15 +16,55 @@ function News(props) {
   const fetchNews = async (pageNumber) => {
     setLoading(true);
     try {
-      const apiKey = props.apikey || process.env.NEWS_API_KEY;
-      const categoryParam = props.category ? `&category=${encodeURIComponent(props.category)}` : '';
+      const apiKey = props.apikey || process.env.REACT_APP_NEWS_API_KEY || process.env.NEWS_API_KEY;
+      const allowedCategories = ['business','entertainment','environment','food','health','politics','science','sports','technology','top'];
+      let categoryParam = '';
+      if (props.category) {
+        const cat = String(props.category).toLowerCase();
+        if (allowedCategories.includes(cat)) {
+          categoryParam = `&category=${encodeURIComponent(cat)}`;
+        } else {
+          console.warn(`Category \"${props.category}\" is not supported by Newsdata.io; omitting category filter.`);
+        }
+      }
       const countryParam = props.country ? `&country=${encodeURIComponent(props.country)}` : '';
       const qParam = props.search ? `&q=${encodeURIComponent(props.search)}` : '';
       const pageParam = `&page=${pageNumber}`;
 
-      const url = `https://newsdata.io/api/1/news?apikey=${apiKey}${categoryParam}${countryParam}&language=en${qParam}${pageParam}`;
-      const data = await fetch(url);
-      const parsedData = await data.json();
+      const endpoint = props.search ? 'latest' : 'news';
+      let url = `https://newsdata.io/api/1/${endpoint}?apikey=${apiKey}${categoryParam}${countryParam}&language=en${qParam}${pageParam}`;
+      let response = await fetch(url);
+      let parsedData = await response.json();
+
+      // If Newsdata returns 422 for category (public plan restrictions), retry without category
+      if (!response.ok && response.status === 422 && categoryParam) {
+        console.warn('422 received, retrying without category param');
+        url = `https://newsdata.io/api/1/${endpoint}?apikey=${apiKey}${countryParam}&language=en${qParam}${pageParam}`;
+        response = await fetch(url);
+        parsedData = await response.json();
+      }
+
+      // If still 422 and message indicates pagination issue, retry without page parameter
+      if (!response.ok && response.status === 422) {
+        const code = parsedData && parsedData.results && parsedData.results.code;
+        const msg = parsedData && parsedData.results && parsedData.results.message;
+        if (code === 'UnsupportedFilter' && msg && msg.toLowerCase().includes('next page')) {
+          console.warn('422 pagination error received, retrying without page parameter');
+          url = `https://newsdata.io/api/1/${endpoint}?apikey=${apiKey}${categoryParam}${countryParam}&language=en${qParam}`; // drop page
+          response = await fetch(url);
+          parsedData = await response.json();
+        }
+      }
+
+      if (!response.ok) {
+        console.error('Newsdata API error', response.status, parsedData);
+        setError(parsedData);
+        setArticles([]);
+        setTotalResults(0);
+        return;
+      }
+
+      setError(null);
 
       const results = parsedData.results || parsedData.articles || [];
       setArticles(results);
@@ -32,6 +73,7 @@ function News(props) {
       setTotalResults(total);
     } catch (err) {
       console.error('Failed fetching news:', err);
+      setError({ message: err.message });
       setArticles([]);
       setTotalResults(0);
     } finally {
@@ -72,21 +114,32 @@ function News(props) {
       )}
 
       <div className="row d-flex">
-        {!loading && Array.isArray(articles) &&
+        {!loading && error && (
+          <div className="col-12">
+            <div className="alert alert-danger">API error: {error.message || JSON.stringify(error)}</div>
+          </div>
+        )}
+
+        {!loading && !error && Array.isArray(articles) &&
           articles.map((element) => {
             const img = element.image_url || element.urlToImage || element.image;
             const newsLink = element.link || element.url || '';
             const author = Array.isArray(element.creator) && element.creator.length > 0 ? element.creator[0] : element.author || 'unknown';
             const dateVal = element.pubDate || element.publishedAt || element.date || '';
             return (
-              <div className="col-md-4" key={newsLink || element.title}>
+              <div className="col-md-4 mb-4" key={newsLink || element.title}>
                 <UpdateNews
-                  mytitle={element.title ? element.title : ''}
-                  desc={element.description ? element.description : ''}
+                  mytitle={element.title}
+                  desc={element.description}
                   imgUrl={img}
                   newsUrl={newsLink}
                   author={author}
                   date={dateVal}
+                  sourceName={element.source_name}
+                  source_url={element.source_url}
+                  categories={element.category}
+                  keywords={element.keywords}
+                  pubDate={element.pubDate}
                 />
               </div>
             );

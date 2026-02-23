@@ -8,8 +8,7 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Runs the app in development mode. Open your browser at the address shown by the dev server (usually http://localhost:3000).
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
@@ -19,10 +18,18 @@ You may also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Builds the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance.
+
+To preview the production build locally after `npm run build`:
+
+```powershell
+npm run serve
+```
+
+When deploying, set your production API key as an environment variable named `REACT_APP_NEWS_API_KEY` (for Create React App builds) or `NEWS_API_KEY` in your server environment and follow your hosting provider's deployment instructions.
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
